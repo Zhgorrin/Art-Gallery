@@ -44,10 +44,10 @@ class _AddScreenState extends State<AddScreen> {
                 TextFormField(
                   controller: _controllerName,
                   decoration: const InputDecoration(
-                      hintText: 'Enter the name of the item'),
+                      hintText: 'Enter the title of your atrt'),
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter the item name';
+                      return 'Please enter the artwork title';
                     }
                     return null;
                   },
@@ -55,10 +55,10 @@ class _AddScreenState extends State<AddScreen> {
                 TextFormField(
                   controller: _controllerQuantity,
                   decoration: const InputDecoration(
-                      hintText: 'Enter the quantity of the item'),
+                      hintText: 'Enter the description of the artwork'),
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter the item quantity';
+                      return 'Please enter the artwork description';
                     }
                     return null;
                   },
