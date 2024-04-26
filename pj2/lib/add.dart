@@ -21,7 +21,7 @@ class _AddScreenState extends State<AddScreen> {
   GlobalKey<FormState> key = GlobalKey();
 
   final CollectionReference _reference =
-      FirebaseFirestore.instance.collection('shopping_list');
+      FirebaseFirestore.instance.collection('art_posts');
 
   String imageUrl = '';
   File? imageFile;
@@ -32,7 +32,7 @@ class _AddScreenState extends State<AddScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add an item'),
+        title: const Text('Add an Art Post'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -43,25 +43,29 @@ class _AddScreenState extends State<AddScreen> {
               children: [
                 TextFormField(
                   controller: _controllerName,
-                  decoration: const InputDecoration(
-                      hintText: 'Enter the title of your atrt'),
+                  decoration: const InputDecoration(hintText: 'Enter the name'),
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter the artwork title';
+                      return 'Please enter a name';
                     }
                     return null;
                   },
                 ),
                 TextFormField(
                   controller: _controllerQuantity,
-                  decoration: const InputDecoration(
-                      hintText: 'Enter the description of the artwork'),
+                  decoration:
+                      const InputDecoration(hintText: 'Enter the quantity'),
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter the artwork description';
+                      return 'Please enter a quantity';
                     }
                     return null;
                   },
+                ),
+                TextFormField(
+                  controller: _controllerComment,
+                  decoration:
+                      const InputDecoration(hintText: 'Enter a description'),
                 ),
                 ElevatedButton(
                   onPressed: () async {
@@ -99,29 +103,26 @@ class _AddScreenState extends State<AddScreen> {
                   },
                   child: const Text('Pick Image'),
                 ),
-                TextFormField(
-                  controller: _controllerComment,
-                  decoration: const InputDecoration(
-                    hintText: 'Enter your comment (optional)',
-                  ),
-                ),
                 Row(
                   children: [
                     ElevatedButton(
                       onPressed: () async {
                         if (key.currentState!.validate()) {
-                          String itemName = _controllerName.text;
-                          String itemQuantity = _controllerQuantity.text;
-                          String comment = _controllerComment.text;
+                          String title = _controllerName.text;
+                          String quantity = _controllerQuantity.text;
+                          String description = _controllerComment.text;
 
                           Map<String, dynamic> dataToSend = {
-                            'name': itemName,
-                            'quantity': itemQuantity,
+                            'title': title,
+                            'quantity': quantity,
+                            'description': description,
                             'image': imageUrl,
-                            'comment': comment,
                           };
 
-                          _reference.add(dataToSend);
+                          _reference.add(dataToSend).then((value) {
+                            Navigator.pushNamed(context, '/artboard',
+                                arguments: 1);
+                          });
                         }
                       },
                       child: const Text('Submit'),
