@@ -1,6 +1,7 @@
 // artboard.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'add.dart';
 
 class ArtbookDashboardScreen extends StatefulWidget {
   const ArtbookDashboardScreen({Key? key}) : super(key: key);
@@ -10,6 +11,14 @@ class ArtbookDashboardScreen extends StatefulWidget {
 }
 
 class _ArtbookDashboardScreenState extends State<ArtbookDashboardScreen> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,23 +63,34 @@ class _ArtbookDashboardScreenState extends State<ArtbookDashboardScreen> {
               },
             ),
           ),
-          BottomNavigationBar(
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Profile',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.palette),
-                label: 'My Art',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.add),
-                label: 'Add',
-              ),
-            ],
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.palette),
+            label: 'My Art',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            label: 'Add',
           ),
         ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        onTap: (index) {
+          _onItemTapped(index);
+          if (index == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AddScreen()),
+            );
+          }
+        },
       ),
     );
   }
