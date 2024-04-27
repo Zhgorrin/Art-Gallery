@@ -6,7 +6,7 @@ import 'package:pj2/registration.dart';
 import 'package:pj2/artboard.dart';
 
 class ArtbookLoginScreen extends StatefulWidget {
-  const ArtbookLoginScreen({super.key});
+  const ArtbookLoginScreen({Key? key});
 
   @override
   _ArtbookLoginScreenState createState() => _ArtbookLoginScreenState();

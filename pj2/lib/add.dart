@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'artboard.dart';
 
 class AddScreen extends StatefulWidget {
   const AddScreen({Key? key});
@@ -96,9 +98,7 @@ class _AddScreenState extends State<AddScreen> {
                           imageWidth = frameInfo.image.width.toDouble();
                           imageHeight = frameInfo.image.height.toDouble();
                         });
-                      } catch (error) {
-                        // Handle error
-                      }
+                      } catch (error) {}
                     }
                   },
                   child: const Text('Pick Image'),
@@ -112,16 +112,25 @@ class _AddScreenState extends State<AddScreen> {
                           String quantity = _controllerQuantity.text;
                           String description = _controllerComment.text;
 
+                          String? authorId =
+                              FirebaseAuth.instance.currentUser?.uid;
+
                           Map<String, dynamic> dataToSend = {
                             'title': title,
                             'quantity': quantity,
                             'description': description,
                             'image': imageUrl,
+                            'authorId': authorId,
                           };
 
                           _reference.add(dataToSend).then((value) {
-                            Navigator.pushNamed(context, '/artboard',
-                                arguments: 1);
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ArtbookDashboardScreen()),
+                              (route) => false,
+                            );
                           });
                         }
                       },
