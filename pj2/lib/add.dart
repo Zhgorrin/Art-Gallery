@@ -19,12 +19,9 @@ class _AddScreenState extends State<AddScreen> {
   final TextEditingController _controllerName = TextEditingController();
   final TextEditingController _controllerQuantity = TextEditingController();
   final TextEditingController _controllerComment = TextEditingController();
-
   GlobalKey<FormState> key = GlobalKey();
-
   final CollectionReference _reference =
       FirebaseFirestore.instance.collection('art_posts');
-
   String imageUrl = '';
   File? imageFile;
   double? imageWidth;
@@ -74,7 +71,6 @@ class _AddScreenState extends State<AddScreen> {
                     final ImagePicker _picker = ImagePicker();
                     final XFile? pickedImage =
                         await _picker.pickImage(source: ImageSource.gallery);
-
                     if (pickedImage != null) {
                       String uniqueFileName =
                           DateTime.now().millisecondsSinceEpoch.toString();
@@ -83,13 +79,11 @@ class _AddScreenState extends State<AddScreen> {
                           referenceRoot.child('images');
                       Reference referenceImageToUpload =
                           referenceDirImages.child(uniqueFileName);
-
                       try {
                         await referenceImageToUpload
                             .putFile(File(pickedImage.path));
                         imageUrl =
                             await referenceImageToUpload.getDownloadURL();
-
                         ui.Codec codec = await ui.instantiateImageCodec(
                             File(pickedImage.path).readAsBytesSync());
                         ui.FrameInfo frameInfo = await codec.getNextFrame();
@@ -111,24 +105,30 @@ class _AddScreenState extends State<AddScreen> {
                           String title = _controllerName.text;
                           String quantity = _controllerQuantity.text;
                           String description = _controllerComment.text;
-
                           String? authorId =
                               FirebaseAuth.instance.currentUser?.uid;
-
+                          User? user = FirebaseAuth.instance.currentUser;
+                          String authorFirstName =
+                              user?.displayName?.split(' ').firstOrNull ?? '';
+                          String authorLastName =
+                              user?.displayName?.split(' ').lastOrNull ?? '';
                           Map<String, dynamic> dataToSend = {
                             'title': title,
                             'quantity': quantity,
                             'description': description,
                             'image': imageUrl,
                             'authorId': authorId,
+                            'createdAt': FieldValue.serverTimestamp(),
+                            'authorFirstName': authorFirstName,
+                            'authorLastName': authorLastName,
                           };
-
                           _reference.add(dataToSend).then((value) {
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      const ArtbookDashboardScreen()),
+                                builder: (context) =>
+                                    const ArtbookDashboardScreen(),
+                              ),
                               (route) => false,
                             );
                           });
@@ -139,19 +139,14 @@ class _AddScreenState extends State<AddScreen> {
                   ],
                 ),
                 if (imageFile != null)
-                  GestureDetector(
-                    onTap: () {
-                      _showImageDialog(context, imageFile!.path);
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(8.0),
-                      width: double.infinity,
-                      child: AspectRatio(
-                        aspectRatio: imageWidth! / imageHeight!,
-                        child: Image.file(
-                          imageFile!,
-                          fit: BoxFit.cover,
-                        ),
+                  Container(
+                    padding: const EdgeInsets.all(8.0),
+                    width: double.infinity,
+                    child: AspectRatio(
+                      aspectRatio: imageWidth! / imageHeight!,
+                      child: Image.file(
+                        imageFile!,
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
@@ -162,22 +157,9 @@ class _AddScreenState extends State<AddScreen> {
       ),
     );
   }
+}
 
-  void _showImageDialog(BuildContext context, String imagePath) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.8,
-            height: MediaQuery.of(context).size.height * 0.8,
-            child: Image.file(
-              File(imagePath),
-              fit: BoxFit.contain,
-            ),
-          ),
-        );
-      },
-    );
-  }
+extension ListExtensions<T> on List<T> {
+  T? get firstOrNull => isEmpty ? null : first;
+  T? get lastOrNull => isEmpty ? null : last;
 }
