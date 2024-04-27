@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pj2/add.dart';
 import 'package:pj2/profile.dart';
+import 'package:pj2/chat_screen.dart';
 
 class ArtbookDashboardScreen extends StatefulWidget {
   const ArtbookDashboardScreen({Key? key});
@@ -57,22 +58,37 @@ class _ArtbookDashboardScreenState extends State<ArtbookDashboardScreen> {
           return Center(child: Text('Error: ${snapshot.error}'));
         }
         final List<QueryDocumentSnapshot> posts = snapshot.data!.docs;
-        final List<QueryDocumentSnapshot> shown = posts.reversed.toList();
         return ListView.builder(
-          itemCount: shown.length,
+          itemCount: posts.length,
           itemBuilder: (context, index) {
-            final post = shown[index];
+            final post = posts[index];
             return ListTile(
               title: Text(post['title']),
               subtitle: Text(post['description']),
-              trailing: post['image'] != null
-                  ? Image.network(
-                      post['image'],
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.cover,
-                    )
-                  : const SizedBox.shrink(),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.chat_bubble),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChatScreen(postId: post.id),
+                        ),
+                      );
+                    },
+                  ),
+                  post['image'] != null
+                      ? Image.network(
+                          post['image'],
+                          width: 50,
+                          height: 50,
+                          fit: BoxFit.cover,
+                        )
+                      : SizedBox.shrink(),
+                ],
+              ),
             );
           },
         );

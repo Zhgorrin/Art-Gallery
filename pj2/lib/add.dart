@@ -45,10 +45,10 @@ class _AddScreenState extends State<AddScreen> {
               children: [
                 TextFormField(
                   controller: _controllerName,
-                  decoration: const InputDecoration(hintText: 'Enter the title'),
+                  decoration: const InputDecoration(hintText: 'Enter the name'),
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter the title of your artwork';
+                      return 'Please enter a name';
                     }
                     return null;
                   },
@@ -56,10 +56,10 @@ class _AddScreenState extends State<AddScreen> {
                 TextFormField(
                   controller: _controllerQuantity,
                   decoration:
-                      const InputDecoration(hintText: 'Enter the tags'),
+                      const InputDecoration(hintText: 'Enter the quantity'),
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter the tags of your artwork (painting, digital, landscape, etc...)';
+                      return 'Please enter a quantity';
                     }
                     return null;
                   },
@@ -67,7 +67,7 @@ class _AddScreenState extends State<AddScreen> {
                 TextFormField(
                   controller: _controllerComment,
                   decoration:
-                      const InputDecoration(hintText: 'Enter a description for your artwork'),
+                      const InputDecoration(hintText: 'Enter a description'),
                 ),
                 ElevatedButton(
                   onPressed: () async {
