@@ -53,10 +53,10 @@ class _AddScreenState extends State<AddScreen> {
                 TextFormField(
                   controller: _controllerQuantity,
                   decoration:
-                      const InputDecoration(hintText: 'Enter the quantity'),
+                      const InputDecoration(hintText: 'Enter the metadata'),
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter a quantity';
+                      return 'Please enter the metadata';
                     }
                     return null;
                   },
