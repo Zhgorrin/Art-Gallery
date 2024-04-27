@@ -57,10 +57,11 @@ class _ArtbookDashboardScreenState extends State<ArtbookDashboardScreen> {
           return Center(child: Text('Error: ${snapshot.error}'));
         }
         final List<QueryDocumentSnapshot> posts = snapshot.data!.docs;
+        final List<QueryDocumentSnapshot> shown = posts.reversed.toList();
         return ListView.builder(
-          itemCount: posts.length,
+          itemCount: shown.length,
           itemBuilder: (context, index) {
-            final post = posts[index];
+            final post = shown[index];
             return ListTile(
               title: Text(post['title']),
               subtitle: Text(post['description']),
