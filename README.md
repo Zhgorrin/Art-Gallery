@@ -5,6 +5,6 @@ Users can post their own art, or leave comments on other peoples artwork. Run as
 The plus button allows you to create a post. 
 Click on a piece of artwork to zoom in on it.
 CLick on the chat bubble to see that particular artwork's chatroom.
-A profile where users can see their post along with the ability to log out of an account.
+A profile where users can see their posts along with the ability to log out of an account.
 
 Presentation Link: https://www.youtube.com/watch?v=NwrV10HwWmk
