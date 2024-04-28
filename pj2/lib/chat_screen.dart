@@ -1,4 +1,4 @@
-// // chat_screen.dart
+// chat_screen.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -58,7 +58,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       title: Text(message['sender']),
                       subtitle: Text(message['text']),
                       trailing: Text(
-                        DateFormat('MM/dd/yyyy HH:mm')
+                        DateFormat('MM/dd/yyyy, hh:mm a')
                             .format(message['timestamp'].toDate()),
                       ),
                     );

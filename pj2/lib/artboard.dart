@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pj2/add.dart';
 import 'package:pj2/profile.dart';
 import 'package:pj2/chat_screen.dart';
+import 'package:intl/intl.dart';
 
 class ArtbookDashboardScreen extends StatefulWidget {
   const ArtbookDashboardScreen({Key? key});
@@ -118,7 +119,9 @@ class _ArtbookDashboardScreenState extends State<ArtbookDashboardScreen> {
                                 ),
                               ),
                               Text(
-                                post['createdAt'].toDate().toString(),
+                                DateFormat('MM/dd/yyyy, ')
+                                        .format(post['createdAt'].toDate()) +
+                                    _formatTime(post['createdAt'].toDate()),
                                 style: const TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey,
@@ -134,6 +137,8 @@ class _ArtbookDashboardScreenState extends State<ArtbookDashboardScreen> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
+                          const SizedBox(height: 4),
+                          Text('Quantity: ${post['quantity']}'),
                           const SizedBox(height: 4),
                           Text(post['description']),
                           const SizedBox(height: 8),
@@ -165,5 +170,14 @@ class _ArtbookDashboardScreenState extends State<ArtbookDashboardScreen> {
         );
       },
     );
+  }
+
+  String _formatTime(DateTime dateTime) {
+    final hour = dateTime.hour;
+    final minute = dateTime.minute;
+    final period = hour >= 12 ? 'PM' : 'AM';
+    final hourFormatted = hour > 12 ? hour - 12 : hour;
+
+    return '${hourFormatted.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')} $period';
   }
 }
